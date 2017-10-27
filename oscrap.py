@@ -40,7 +40,7 @@ class Webcomic:
 	def scrap(self):
 		"""
 		Start the scrapping scenario,
-		From the last downloaded strip or from the begining."""
+		From the last downloaded strip or from the beginning."""
 
 		if os.path.exists(self.scrap_path):
 			self.from_last()
@@ -113,7 +113,7 @@ class Webcomic:
 
 	def from_start(self):
 		"""
-		Scrap from the start url, the begining of the comic"""
+		Scrap from the start url, the beginning of the comic"""
 
 		# create the strips folder, where the webcomic will be download
 		if os.mkdir(self.scrap_path) is None:
@@ -227,9 +227,6 @@ def main():
 		elif('-c' in sys.argv):
 			print("Counting stories...")
 			oglaf.count_stories()
-
-		elif('-test' in sys.argv):
-			print("_")
 
 	except KeyboardInterrupt as e:
 		print("\n\nThe scraping has been stopped")
