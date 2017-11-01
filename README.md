@@ -1,7 +1,10 @@
 # Oglaf Scraper
 
+## Description
+
 Oglaf Scraper is a script which download every strips of the [NSFW webcomic Oglaf.com](https://oglaf.com/).
 With this script, you are able to either download the strips from the beginning, or you can also start again from the last strips you downloaded.
+It uses the [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) Python library.
 
 ## Installation
 
