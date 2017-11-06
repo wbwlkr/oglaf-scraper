@@ -3,7 +3,8 @@
 """Title : Oglaf Scraper
 Author : wbwlkr (wbwlkr.github.io)
 Description :
-Scrap all the oglaf strips / Get an update / Get the number of stories"""
+Scrap all the oglaf strips / Get an update / Get the number of stories.
+"""
 
 import sys
 import os.path
@@ -15,8 +16,8 @@ from bs4 import BeautifulSoup
 
 
 class Webcomic:
-    """Main class to scrap data and download strips from oglaf.com"""
-
+    """Main class to scrap data and download strips from oglaf.com.
+    """
     def __init__(self):
         self.site = 'http://oglaf.com'
         self.start_uri = '/cumsprite/'
@@ -27,8 +28,8 @@ class Webcomic:
         self.scrap_path = os.path.join(self.script_path, self.scrap_folder)
 
     def count_stories(self):
-        """Count all the stories in the archive page."""
-
+        """Count all the stories in the archive page.
+        """
         r_page = requests.get(self.site + '/archive/')
         self.beautiful_scrap = BeautifulSoup(r_page.text, 'lxml')
         stories = self.beautiful_scrap.select('body div > div > div > a > img')
@@ -39,17 +40,16 @@ class Webcomic:
             print('Scraping impossible : the website structure has changed.')
 
     def scrap(self):
-        """Start the scrapping scenario,
-        From the last downloaded strip or from the beginning."""
-
+        """Launch the scrapping scenario, from the first or the last strip.
+        """
         if os.path.exists(self.scrap_path):
             self.from_last()
         else:
             self.from_start()
 
     def from_last(self):
-        """Scrap from the last strip downloaded in the comic_folder"""
-
+        """Scrap from the last strip downloaded in the comic_folder.
+        """
         cleaned_dir = self.clean_folder()
 
         if not os.listdir(self.scrap_path):
@@ -65,8 +65,8 @@ class Webcomic:
                 return False
 
     def clean_folder(self):
-        """Delete the failed downloads and return a clean list of files"""
-
+        """Delete the failed downloads and return a clean list of files.
+        """
         folder_has_been_cleaned = False
         forbidden_list = (".tmp", "(", ")")
         strips_before = sorted(os.listdir(self.scrap_path))
@@ -87,8 +87,8 @@ class Webcomic:
             return strips_after
 
     def get_next_uri(self, last_file):
-        """Find the uri of the next strip from the name of the last download"""
-
+        """Find the uri of the next strip from the name of the last download.
+        """
         last_strip_uri = self.find_uri(last_file.strip('.jpg'))
 
         last_page = requests.get(self.site + last_strip_uri)
@@ -97,8 +97,8 @@ class Webcomic:
         return self.scrap_next_link()
 
     def find_uri(self, last_strip):
-        """Get an uri from the filename"""
-
+        """Get an uri from the filename.
+        """
         *counter, story_name, episode_nb = last_strip.split('_')
         self.strip_counter = int(counter[0]) + 1
 
@@ -108,8 +108,8 @@ class Webcomic:
         return "/" + story_name + "/" + episode_nb
 
     def from_start(self):
-        """Scrap from the start url, the beginning of the comic"""
-
+        """Scrap from the start url, the beginning of the comic.
+        """
         # create the strips folder, where the webcomic will be download
         if os.mkdir(self.scrap_path) is None:
             self.get_strip(self.start_uri)
@@ -118,8 +118,8 @@ class Webcomic:
             print(self.scrap_path)
 
     def get_strip(self, uri):
-        """Scrap the image's strip from its uri."""
-
+        """Scrap the image's strip from its uri.
+        """
         print("\n>> %s" % uri)
 
         # find the strip pic url
@@ -148,8 +148,8 @@ class Webcomic:
             print("That was last strip.")
 
     def scrap_next_link(self):
-        """Scrap the next uri from the beautiful_scrap content"""
-
+        """Scrap the next uri from the beautiful_scrap content.
+        """
         try:
             return self.beautiful_scrap.find('div', id="nx").findParent('a')\
                                                             .get('href')
@@ -158,8 +158,8 @@ class Webcomic:
 
     def download(self, pic_url, story_ep):
         """Download the file from a given url
-        And save it with the related strip counter_story_ep.jpg name"""
-
+        And save it with the related strip counter_story_ep.jpg name.
+        """
         try:
             if len(story_ep) > 2:
                 raise ValueError
@@ -179,11 +179,11 @@ class Webcomic:
 
 
 def timer(function_to_wrap):
-    """Display the elapsed time of the wrapped function"""
-
+    """Display the elapsed time of the wrapped function.
+    """
     def wrapper_func(*args, **kwargs):
-        """Wrapper to get the elapsed time"""
-
+        """Wrapper to get the elapsed time.
+        """
         t_start = time()
         function_processed = function_to_wrap(*args, **kwargs)
         t_end = time()
@@ -193,24 +193,24 @@ def timer(function_to_wrap):
     return wrapper_func
 
 def display_help():
-    """Display description of the script and all its possible commands."""
-
+    """Display description of the script and all its possible commands.
+    """
     sentence = "Oglaf Scraper"
     frameline = (len(sentence) + 4) * "-"
 
-    print(frameline + "\n" + "| " + sentence + " |" + "\n" + frameline)
-    print("Download all the comics, Get an update or count the stories")
-
-    print("\nCommands:")
-    print('-s : ' +     Webcomic.scrap.__doc__)
-    print('-c : ' +  Webcomic.count_stories.__doc__)
-    print('-t : ' +  timer.__doc__)
-    print('-h : ' +     display_help.__doc__ + "\n")
+    print(frameline + "\n" + "| " + sentence + " |" + "\n" + frameline + "\n\n"
+          "Description:\n"
+          "Download all the comics, Get an update or count the stories.\n\n"
+          "Commands:\n"
+          "-s : " + Webcomic.scrap.__doc__ + "\n"
+          "-c : " + Webcomic.count_stories.__doc__ + "\n"
+          "-t : " + timer.__doc__ + "\n"
+          "-h : " + display_help.__doc__ + "\n")
 
 @timer
 def main():
-    """Main function organized to get the sys.argv and display the results"""
-
+    """Main function organized to get the sys.argv and display the results.
+    """
     oglaf = Webcomic()
     try:
         if len(sys.argv) == 1 or '-h' in sys.argv:
@@ -227,7 +227,7 @@ def main():
             oglaf.count_stories()
 
     except KeyboardInterrupt:
-        print("\n\nThe scraping has been stopped")
+        print("\n\nThe scraping has been stopped.")
 
 if __name__ == '__main__':
     main()
