@@ -114,8 +114,8 @@ class Webcomic:
         if os.mkdir(self.scrap_path) is None:
             self.get_strip(self.start_uri)
         else:
-            print("Problem occured while creating the strips folder :")
-            print(self.scrap_path)
+            print("Problem occured while creating the strips folder :" +
+                  self.scrap_path)
 
     def get_strip(self, uri):
         """Scrap the image's strip from its uri.
@@ -192,13 +192,16 @@ def timer(function_to_wrap):
         return function_processed
     return wrapper_func
 
+def make_beautiful_title(title):
+    """Make title looks good by putting it within a frame in ASCII
+    """
+    frameline = (len(title) + 4)*"-"
+    return frameline + "\n" + "| " + title + " |" + "\n" + frameline + "\n"
+
 def display_help():
     """Display description of the script and all its possible commands.
     """
-    sentence = "Oglaf Scraper"
-    frameline = (len(sentence) + 4) * "-"
-
-    print(frameline + "\n" + "| " + sentence + " |" + "\n" + frameline + "\n\n"
+    print(make_beautiful_title("Oglaf Scraper") + "\n"
           "Description:\n"
           "Download all the comics, Get an update or count the stories.\n\n"
           "Commands:\n"
